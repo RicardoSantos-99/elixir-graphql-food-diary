@@ -7,6 +7,35 @@ defmodule FoodDiaryWeb.SchemaTest do
 
   describe "users query" do
     test "when a valid is given return the user", %{conn: conn} do
+      expected_response = %{
+        "data" => %{"user" => nil},
+        "errors" => [
+          %{
+            "locations" => [%{"column" => 3, "line" => 2}],
+            "message" => "User not found",
+            "path" => ["user"]
+          }
+        ]
+      }
+
+      query = """
+      {
+        user(id: "#{123}") {
+          name
+          email
+        }
+      }
+      """
+
+      response =
+        conn
+        |> post("api/graphql", %{"query" => query})
+        |> json_response(:ok)
+
+      assert response == expected_response
+    end
+
+    test "when the user does not exists, returns an error", %{conn: conn} do
       params = %{
         email: "johndoe@bol.com",
         name: "john does"
