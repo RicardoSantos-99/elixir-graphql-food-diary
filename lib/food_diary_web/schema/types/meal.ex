@@ -11,7 +11,14 @@ defmodule FoodDiaryWeb.Schema.Types.Meal do
   object :meal do
     field :id, non_null(:id)
     field :description, non_null(:string)
-    field :calories, non_null(:string)
+    field :calories, non_null(:float)
+    field :category, non_null(:category)
+  end
+
+  input_object :create_meal_input do
+    field :user_id, non_null(:id)
+    field :description, non_null(:string)
+    field :calories, non_null(:float)
     field :category, non_null(:category)
   end
 end
